@@ -1,5 +1,10 @@
 const { detect } = require('./spamDetector');
 
+function randomDelay(min, max) {
+  const ms = Math.floor(Math.random() * (max - min + 1)) + min;
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function createMessageHandler(sock, targetGroupJid, logger) {
   const groupAdmins = new Set();
 
@@ -37,11 +42,15 @@ function createMessageHandler(sock, targetGroupJid, logger) {
         'Spam detected — deleting message and removing sender'
       );
 
+      await randomDelay(2000, 5000);
+
       try {
         await sock.sendMessage(targetGroupJid, { delete: msg.key });
       } catch (err) {
         logger.error({ err, sender }, 'Failed to delete message');
       }
+
+      await randomDelay(1000, 3000);
 
       try {
         await sock.groupParticipantsUpdate(
