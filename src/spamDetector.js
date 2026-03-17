@@ -14,6 +14,7 @@ const SPAM_KEYWORDS = [
   'rug pull',
   'yield farming',
   'liquidity pool',
+  'stock market',
 ];
 
 function buildPattern(keywords) {
